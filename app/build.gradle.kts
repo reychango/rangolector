@@ -75,6 +75,9 @@ dependencies {
     // Jsoup for web scraping
     implementation("org.jsoup:jsoup:1.15.3")
 
+    // Security
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.4.0")
 

@@ -39,11 +39,27 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideDilveService(okHttpClient: OkHttpClient): DilveService {
+        return Retrofit.Builder()
+            .baseUrl("https://www.dilve.es/dilve/dilveweb/webservice/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(DilveService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideUnifiedSpanishBookService(
         todosTusLibrosService: TodosTusLibrosService,
-        casaDelLibroService: CasaDelLibroService
+        casaDelLibroService: CasaDelLibroService,
+        dilveService: DilveServiceImpl
     ): UnifiedSpanishBookService {
-        return UnifiedSpanishBookService(todosTusLibrosService, casaDelLibroService)
+        return UnifiedSpanishBookService(
+            todosTusLibrosService,
+            casaDelLibroService,
+            dilveService
+        )
     }
 
     @Provides

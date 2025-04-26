@@ -8,7 +8,8 @@ import javax.inject.Singleton
 @Singleton
 class UnifiedSpanishBookService @Inject constructor(
     private val todosTusLibrosService: TodosTusLibrosService,
-    private val casaDelLibroService: CasaDelLibroService
+    private val casaDelLibroService: CasaDelLibroService,
+    private val dilveService: DilveServiceImpl
 ) {
     suspend fun searchBooks(query: String): List<SpanishBook> = coroutineScope {
         val todosTusLibrosDeferred = async { 
@@ -27,8 +28,22 @@ class UnifiedSpanishBookService @Inject constructor(
             }
         }
 
-        val allBooks = todosTusLibrosDeferred.await() + casaDelLibroDeferred.await()
-        // Eliminamos duplicados basándonos en el ISBN
-        allBooks.distinctBy { it.isbn }
+        val dilveDeferred = async {
+            try {
+                dilveService.searchBooks(query)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        }
+
+        val allBooks = todosTusLibrosDeferred.await() + 
+                      casaDelLibroDeferred.await() +
+                      dilveDeferred.await()
+                      
+        // Eliminamos duplicados basándonos en el ISBN y damos prioridad a DILVE
+        allBooks.groupBy { it.isbn }
+            .map { (_, books) ->
+                books.firstOrNull { it.source == BookSource.DILVE } ?: books.first()
+            }
     }
 } 
