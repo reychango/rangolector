@@ -1,6 +1,6 @@
 package com.reychango.rangolector.di
 
-import com.reychango.rangolector.data.services.OpenLibraryService
+import com.reychango.rangolector.data.services.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +23,27 @@ object AppModule {
                 level = HttpLoggingInterceptor.Level.BODY
             })
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTodosTusLibrosService(): TodosTusLibrosService {
+        return TodosTusLibrosService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCasaDelLibroService(): CasaDelLibroService {
+        return CasaDelLibroService()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUnifiedSpanishBookService(
+        todosTusLibrosService: TodosTusLibrosService,
+        casaDelLibroService: CasaDelLibroService
+    ): UnifiedSpanishBookService {
+        return UnifiedSpanishBookService(todosTusLibrosService, casaDelLibroService)
     }
 
     @Provides

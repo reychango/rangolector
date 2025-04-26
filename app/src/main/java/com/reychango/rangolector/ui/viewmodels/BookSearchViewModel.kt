@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.reychango.rangolector.data.services.UnifiedBook
-import com.reychango.rangolector.data.services.UnifiedBookService
+import com.reychango.rangolector.data.services.SpanishBook
+import com.reychango.rangolector.data.services.UnifiedSpanishBookService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,13 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookSearchViewModel @Inject constructor(
-    private val bookService: UnifiedBookService
+    private val bookService: UnifiedSpanishBookService
 ) : ViewModel() {
 
     var searchQuery by mutableStateOf("")
         private set
 
-    var searchResults by mutableStateOf<List<UnifiedBook>>(emptyList())
+    var searchResults by mutableStateOf<List<SpanishBook>>(emptyList())
         private set
 
     var isLoading by mutableStateOf(false)

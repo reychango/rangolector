@@ -14,11 +14,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.reychango.rangolector.data.services.UnifiedBook
+import com.reychango.rangolector.data.services.SpanishBook
 
 @Composable
 fun BookItemCard(
-    book: UnifiedBook,
+    book: SpanishBook,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,23 +66,25 @@ fun BookItemCard(
                     overflow = TextOverflow.Ellipsis
                 )
 
-                book.rating?.let { rating ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        RatingStars(rating = rating)
-                        Text(
-                            text = String.format("%.1f", rating),
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                }
+                Text(
+                    text = book.publisher,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-                book.year?.let { year ->
+                Text(
+                    text = "ISBN: ${book.isbn}",
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                book.price?.let { price ->
                     Text(
-                        text = "Publicado en $year",
-                        style = MaterialTheme.typography.bodySmall
+                        text = String.format("%.2f€", price),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
 
